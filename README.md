@@ -5,6 +5,7 @@ A high-performance, MCP-compatible weather API server and client built with Rust
 ## ✨ Features
 
 ### Core Features
+
 - **⚡ Fast HTTP Server**: Built with Axum web framework and async Tokio runtime
 - **🌐 RESTful API**: Clean JSON-based weather information endpoints
 - **🗄️ Rich Weather Data**: Temperature, humidity, wind speed, and conditions for 40+ cities
@@ -13,6 +14,7 @@ A high-performance, MCP-compatible weather API server and client built with Rust
 - **⚙️ Async Client**: Concurrent HTTP client with comprehensive error handling
 
 ### MCP Integration (NEW in v0.3.0)
+
 - **🤖 Claude Code Compatible**: Full Model Context Protocol integration
 - **🔧 MCP Tool Provider**: `/mcp/tool/weather_info` endpoint for AI assistant integration
 - **📋 CLAUDE.md Manifest**: Complete tool documentation for Claude Code Desktop
@@ -21,6 +23,7 @@ A high-performance, MCP-compatible weather API server and client built with Rust
 - **🌐 Zero Configuration**: Auto-detected by Claude Code Desktop on localhost:3000
 
 ### Advanced Features
+
 - **🎨 Web Dashboard**: Clean Scandinavian minimal design with Bootstrap 5
 - **📊 Statistics Endpoint**: Get average temps, hottest/coldest cities, sortable data
 - **✅ Request Validation**: Input validation with helpful error messages
@@ -73,6 +76,7 @@ cargo run --bin server
 ```
 
 You should see:
+
 ```
 🦀 Rust Weather API Server v0.3.0 - MCP Edition
 ================================================
@@ -109,6 +113,7 @@ open index.html
 ```
 
 **Features:**
+
 - 🎨 Clean Scandinavian minimal design (blue/white theme)
 - 📱 Fully responsive (works on mobile, tablet, desktop)
 - 🌐 Real-time data from Rust API
@@ -127,6 +132,7 @@ You: Get weather for Gaza, Stockholm, and Paris
 ```
 
 Claude Code will automatically:
+
 1. Detect the local MCP tool endpoint at `http://localhost:3000/mcp/tool/weather_info`
 2. Call the endpoint with the cities list
 3. Parse and present the weather information
@@ -148,11 +154,13 @@ curl http://localhost:3000/stats?sort=temp
 ## 🔌 API Endpoints
 
 ### MCP Health Check (NEW in v0.3.0)
+
 ```http
 GET http://localhost:3000/mcp
 ```
 
 **Response:**
+
 ```json
 {
   "service": "Rust Weather API - MCP Tool Provider",
@@ -165,6 +173,7 @@ GET http://localhost:3000/mcp
 ```
 
 ### MCP Weather Tool (NEW in v0.3.0)
+
 ```http
 POST http://localhost:3000/mcp/tool/weather_info
 Content-Type: application/json
@@ -175,6 +184,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "tool": "weather_info",
@@ -200,6 +210,7 @@ Content-Type: application/json
 ```
 
 **Validation:**
+
 - ❌ Empty cities array → Returns 400 error
 - ❌ More than 20 cities → Returns 400 error
 - ✅ Unknown cities → Returns default values (20°C, Unknown condition)
@@ -207,11 +218,13 @@ Content-Type: application/json
 ---
 
 ### Health Check
+
 ```http
 GET http://localhost:3000/
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -230,11 +243,13 @@ GET http://localhost:3000/
 ```
 
 ### Get All Cities
+
 ```http
 GET http://localhost:3000/cities
 ```
 
 **Response:**
+
 ```json
 {
   "count": 40,
@@ -243,6 +258,7 @@ GET http://localhost:3000/cities
 ```
 
 ### Get Weather Information
+
 ```http
 POST http://localhost:3000/weather
 Content-Type: application/json
@@ -253,6 +269,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -275,22 +292,26 @@ Content-Type: application/json
 ```
 
 **Request Validation:**
+
 - ❌ Empty cities array: Returns 400 error
 - ❌ More than 20 cities: Returns 400 error with message
 - ✅ Unknown cities: Returns default values (20°C, Unknown condition)
 
 ### Get Weather Statistics
+
 ```http
 GET http://localhost:3000/stats?sort=temp
 ```
 
 **Query Parameters:**
+
 - `sort=temp` or `sort=temperature` - Sort by temperature
 - `sort=name` or `sort=city` - Sort alphabetically
 - `sort=humidity` - Sort by humidity
 - `sort=wind` - Sort by wind speed
 
 **Response:**
+
 ```json
 {
   "total_cities": 40,
@@ -324,22 +345,25 @@ The API includes comprehensive weather data for:
 
 **Oceania:** Sydney, Melbourne, Auckland, Wellington
 
-*Unknown cities default to 20°C with "Unknown" conditions*
+_Unknown cities default to 20°C with "Unknown" conditions_
 
 ## 🧪 Testing
 
 ### Run Unit Tests
+
 ```bash
 cargo test
 ```
 
 Tests include:
+
 - ✅ Database integrity
 - ✅ Data format validation
 - ✅ Value range checks
 - ✅ Minimum city count
 
 ### Run Integration Tests
+
 ```bash
 # Terminal 1: Start server
 cargo run --bin server
@@ -354,21 +378,25 @@ cargo run --bin client
 ## 🔧 Development
 
 ### Build for Development
+
 ```bash
 cargo build
 ```
 
 ### Build for Production
+
 ```bash
 cargo build --release
 ```
 
 ### Format Code
+
 ```bash
 cargo fmt
 ```
 
 ### Lint Code
+
 ```bash
 cargo clippy
 ```
@@ -387,6 +415,7 @@ cargo clippy
 ## 🚀 Performance
 
 Built with Rust for maximum performance:
+
 - **Memory Safety**: Zero-cost abstractions, no garbage collection
 - **Concurrency**: Async/await with Tokio handles thousands of requests
 - **Type Safety**: Compile-time guarantees prevent runtime errors
@@ -425,4 +454,4 @@ Contributions welcome! Feel free to open issues or submit pull requests.
 
 ---
 
-**Built with 🦀 Rust v0.3.0** | **Powered by Axum & Tokio** | **MCP-Compatible** | Made with ❤️ for the community
+**Built with 🦀 Rust v0.3.0** | **Powered by Axum & Tokio** | **MCP-Compatible** | Made with ❤️ for the community.

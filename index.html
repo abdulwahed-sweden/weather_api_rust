@@ -11,22 +11,30 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         /* Clean Scandinavian Minimal Theme - Blue/White */
         :root {
             --primary-blue: #4A90E2;
             --light-blue: #E8F4F8;
+            --light-blue-soft: #F0F8FF;
+            --light-blue-bg: #F8FBFF;
             --dark-text: #2C3E50;
             --light-gray: #F7F9FC;
             --border-color: #E1E8ED;
             --success-green: #52C41A;
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
-            background-color: #FAFBFC;
+            background: linear-gradient(135deg, var(--light-blue-bg) 0%, var(--light-blue-soft) 100%);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--dark-text);
             line-height: 1.5;
+            font-size: 15px;
+            min-height: 100vh;
         }
 
         /* MCP Connection Badge - Footer */
@@ -42,6 +50,8 @@
             font-weight: 500;
             color: var(--dark-text);
             margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(74, 144, 226, 0.15);
         }
 
         .mcp-badge .status-dot {
@@ -57,25 +67,26 @@
                 box-shadow: 0 0 0 0 rgba(82, 196, 26, 0.7);
             }
             50% {
-                box-shadow: 0 0 0 8px rgba(82, 196, 26, 0);
+                box-shadow: 0 0 0 6px rgba(82, 196, 26, 0);
             }
         }
 
         .main-container {
-            max-width: 1400px;
-            margin: 2.5rem auto 1.5rem auto;
-            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 2rem auto 1.5rem auto;
+            padding: 0 1.5rem;
         }
 
         /* Header Section */
         .header-section {
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
             padding: 1.5rem 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.08);
+            border: 1px solid rgba(74, 144, 226, 0.15);
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         .header-section h1 {
@@ -83,6 +94,10 @@
             font-weight: 600;
             color: var(--dark-text);
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), #2C3E50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header-section .subtitle {
@@ -99,26 +114,31 @@
         }
 
         .tech-badge {
-            background: var(--light-blue);
+            background: linear-gradient(135deg, var(--light-blue), #E1E8ED);
             color: var(--primary-blue);
-            padding: 4px 12px;
-            border-radius: 16px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.1);
         }
 
         /* Cards */
         .card {
-            background: white;
-            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            border: 1px solid rgba(74, 144, 226, 0.15);
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.08);
             margin-bottom: 1.5rem;
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.12);
+            transform: translateY(-2px);
+            border-color: rgba(74, 144, 226, 0.3);
         }
 
         .card-title {
@@ -126,51 +146,74 @@
             font-weight: 600;
             color: var(--dark-text);
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Compact Statistics Card Title */
+        .stats-card .card-title {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
         }
 
         /* City Selection */
         .selection-card {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--card-bg), var(--light-blue-soft));
+            border: 1px solid rgba(74, 144, 226, 0.15);
         }
 
         .form-select {
             border: 2px solid var(--border-color);
             border-radius: 8px;
-            padding: 0.6rem 1rem;
+            padding: 0.75rem 1rem;
             font-size: 0.95rem;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
+            background: white;
+            border: 1px solid rgba(74, 144, 226, 0.2);
         }
 
         .form-select:focus {
             border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
         }
 
         .btn-fetch {
-            background: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), #3A7BC8);
             border: none;
-            padding: 0.6rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             font-weight: 500;
             border-radius: 8px;
             transition: all 0.3s ease;
             color: white;
+            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+            border: 1px solid rgba(74, 144, 226, 0.3);
         }
 
         .btn-fetch:hover {
-            background: #3A7BC8;
+            background: linear-gradient(135deg, #3A7BC8, var(--primary-blue));
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+            border-color: rgba(74, 144, 226, 0.5);
         }
 
         /* Weather Display */
         .weather-display {
-            padding: 1.75rem 1.5rem;
+            padding: 2rem 1.5rem;
             text-align: center;
+            background: linear-gradient(135deg, var(--card-bg), var(--light-blue-soft));
+            border: 1px solid rgba(74, 144, 226, 0.15);
         }
 
         .weather-icon {
-            font-size: 3.5rem;
-            color: var(--primary-blue);
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--primary-blue), #6AB0FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 1rem;
         }
 
@@ -182,9 +225,12 @@
         }
 
         .temp-display {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), #2C3E50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.35rem;
         }
 
@@ -192,6 +238,7 @@
             font-size: 1.25rem;
             color: #6B7280;
             margin-bottom: 1.25rem;
+            font-weight: 500;
         }
 
         .weather-details {
@@ -202,17 +249,22 @@
         }
 
         .detail-item {
-            background: var(--light-gray);
-            padding: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--light-gray), white);
+            padding: 1.25rem;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            border: 1px solid rgba(74, 144, 226, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .detail-item i {
             font-size: 1.75rem;
-            color: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), #6AB0FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .detail-info {
@@ -223,6 +275,7 @@
             font-size: 0.85rem;
             color: #6B7280;
             margin-bottom: 0.15rem;
+            font-weight: 500;
         }
 
         .detail-value {
@@ -231,24 +284,37 @@
             color: var(--dark-text);
         }
 
-        /* Statistics Panel */
+        /* Statistics Panel - Compact */
         .stats-card {
-            padding: 1.25rem 1.5rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--card-bg), var(--light-blue-soft));
+            border: 1px solid rgba(74, 144, 226, 0.15);
         }
 
         .stat-item {
-            padding: 1rem;
-            background: var(--light-gray);
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--light-gray), white);
             border-radius: 8px;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            border: 1px solid rgba(74, 144, 226, 0.1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateX(3px);
+            border-color: rgba(74, 144, 226, 0.2);
         }
 
         .stat-item i {
-            font-size: 1.75rem;
-            color: var(--primary-blue);
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--primary-blue), #6AB0FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-content {
@@ -256,13 +322,14 @@
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #6B7280;
-            margin-bottom: 0.15rem;
+            margin-bottom: 0.1rem;
+            font-weight: 500;
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--dark-text);
         }
@@ -270,10 +337,15 @@
         /* Footer */
         .footer {
             text-align: center;
-            padding: 2rem 2rem;
+            padding: 2rem;
             color: #6B7280;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
             margin-top: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 144, 226, 0.15);
         }
 
         .footer a {
@@ -291,6 +363,8 @@
             display: none;
             border-radius: 8px;
             border-left: 4px solid #EF4444;
+            background: linear-gradient(135deg, #FEF2F2, white);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         /* Loading Spinner */
@@ -322,7 +396,19 @@
 
             .main-container {
                 padding: 0 1rem;
-                margin-top: 2.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .header-section {
+                padding: 1.25rem;
+            }
+
+            .stats-card {
+                padding: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.6rem;
             }
         }
 
@@ -341,13 +427,26 @@
                 transform: translateY(0);
             }
         }
+
+        /* Glass morphism effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* Border enhancements */
+        .border-enhanced {
+            border: 1px solid rgba(74, 144, 226, 0.15);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.08);
+        }
     </style>
 </head>
 <body>
     <div class="main-container">
 
         <!-- Header Section -->
-        <div class="header-section fade-in">
+        <div class="header-section fade-in border-enhanced">
             <h1>
                 <i class="bi bi-cloud-sun-fill me-2"></i>
                 Rust Weather API
@@ -370,7 +469,7 @@
         </div>
 
         <!-- City Selection Section -->
-        <div class="card selection-card fade-in">
+        <div class="card selection-card fade-in border-enhanced">
             <h5 class="card-title">
                 <i class="bi bi-geo-alt-fill text-primary me-2"></i>
                 Select a City
@@ -397,21 +496,21 @@
         <div class="row">
             <div class="col-lg-8 mb-4">
                 <div class="card" id="weatherCard" style="display: none;">
-                    <div class="weather-display">
+                    <div class="weather-display border-enhanced">
                         <i class="bi bi-cloud-sun weather-icon" id="weatherIcon"></i>
                         <h2 class="city-name" id="cityName">--</h2>
                         <div class="temp-display" id="temperature">--°C</div>
                         <p class="condition-text" id="condition">--</p>
 
                         <div class="weather-details">
-                            <div class="detail-item">
+                            <div class="detail-item border-enhanced">
                                 <i class="bi bi-droplet-fill"></i>
                                 <div class="detail-info">
                                     <div class="detail-label">Humidity</div>
                                     <div class="detail-value" id="humidity">--%</div>
                                 </div>
                             </div>
-                            <div class="detail-item">
+                            <div class="detail-item border-enhanced">
                                 <i class="bi bi-wind"></i>
                                 <div class="detail-info">
                                     <div class="detail-label">Wind Speed</div>
@@ -423,9 +522,9 @@
                 </div>
             </div>
 
-            <!-- Statistics Panel -->
+            <!-- Statistics Panel - Compact -->
             <div class="col-lg-4 mb-4">
-                <div class="card stats-card" id="statsCard" style="display: none;">
+                <div class="card stats-card border-enhanced" id="statsCard" style="display: none;">
                     <h5 class="card-title">
                         <i class="bi bi-bar-chart-fill me-2"></i>
                         Global Statistics
@@ -467,8 +566,8 @@
         </div>
 
         <!-- Footer -->
-        <div class="footer">
-            <div class="mcp-badge">
+        <div class="footer border-enhanced">
+            <div class="mcp-badge border-enhanced">
                 <span class="status-dot"></span>
                 <span>🔗 MCP Connected</span>
             </div>

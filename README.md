@@ -13,6 +13,7 @@ A high-performance, feature-rich weather API server and client built with Rust, 
 - **⚙️ Async Client**: Concurrent HTTP client with comprehensive error handling
 
 ### Advanced Features
+- **🎨 Web Dashboard**: Beautiful, responsive single-page UI with Bootstrap 5
 - **📊 Statistics Endpoint**: Get average temps, hottest/coldest cities, sortable data
 - **✅ Request Validation**: Input validation with helpful error messages
 - **🌍 40+ Cities**: Weather data for major cities worldwide
@@ -25,6 +26,7 @@ A high-performance, feature-rich weather API server and client built with Rust, 
 ```
 weather_api_rust/
 ├── Cargo.toml          # Project dependencies and metadata
+├── index.html          # 🎨 Web Dashboard (Bootstrap 5 UI)
 ├── examples.sh         # cURL examples for testing
 ├── src/
 │   ├── server.rs       # HTTP server with all endpoints + tests
@@ -82,7 +84,22 @@ cargo run --bin client
 
 The client runs 4 comprehensive tests and displays detailed results.
 
-### 3. Use cURL Examples
+### 3. Use the Web Dashboard
+
+```bash
+# Open the web dashboard in your browser
+open index.html
+```
+
+**Features:**
+- 🎨 Beautiful gradient design with purple/blue theme
+- 📱 Fully responsive (works on mobile, tablet, desktop)
+- 🌐 Real-time data from Rust API
+- 🌤️ Dynamic weather icons based on conditions
+- 📊 Global statistics sidebar
+- ⚡ Smooth animations and loading states
+
+### 4. Use cURL Examples
 
 ```bash
 # Run all example commands

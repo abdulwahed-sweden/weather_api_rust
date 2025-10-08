@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Weather API Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+        /* Custom Styles */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .weather-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-icon {
+            font-size: 5rem;
+            color: #667eea;
+        }
+
+        .temp-display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .city-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .weather-detail {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .weather-detail i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+
+        .btn-fetch {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-fetch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .spinner-border {
+            display: none;
+        }
+
+        .spinner-border.show {
+            display: inline-block;
+        }
+
+        .stat-item {
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0.5rem 0;
+        }
+
+        .stat-item i {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .error-alert {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .temp-display {
+                font-size: 3rem;
+            }
+            .weather-icon {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+        <!-- Header Section -->
+        <div class="card header-card mb-4 fade-in">
+            <div class="card-body text-center py-4">
+                <h1 class="mb-2">
+                    <i class="bi bi-cloud-sun-fill me-2"></i>
+                    Rust Weather API Dashboard
+                </h1>
+                <p class="mb-0 opacity-75">
+                    <i class="bi bi-gear-fill me-1"></i>
+                    Powered by Rust, Axum & Tokio | v0.2.0
+                </p>
+            </div>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="alert alert-danger error-alert" role="alert" id="errorAlert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span id="errorMessage">Server is not responding. Please make sure the Rust server is running on http://localhost:3000</span>
+        </div>
+
+        <!-- City Selection Section -->
+        <div class="card weather-card mb-4 fade-in">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-3">
+                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                    Select a City
+                </h5>
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3 mb-md-0">
+                        <select class="form-select form-select-lg" id="citySelect">
+                            <option value="" selected>Loading cities...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-fetch w-100" id="fetchWeatherBtn">
+                            <span id="btnText">
+                                <i class="bi bi-cloud-download me-2"></i>
+                                Get Weather
+                            </span>
+                            <span class="spinner-border spinner-border-sm ms-2" id="btnSpinner"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Display Section -->
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card weather-card" id="weatherCard" style="display: none;">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-cloud-sun weather-icon" id="weatherIcon"></i>
+                            <h2 class="city-name mt-3" id="cityName">--</h2>
+                            <div class="temp-display" id="temperature">--°C</div>
+                            <p class="text-muted fs-4" id="condition">--</p>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="weather-detail">
+                                    <i class="bi bi-droplet-fill fs-4"></i>
+                                    <strong>Humidity:</strong>
+                                    <span class="float-end" id="humidity">--%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="weather-detail">
+                                    <i class="bi bi-wind fs-4"></i>
+                                    <strong>Wind Speed:</strong>
+                                    <span class="float-end" id="windSpeed">-- km/h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="col-lg-4 mb-4">
+                <div class="card stats-card" id="statsCard" style="display: none;">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-bar-chart-fill me-2"></i>
+                            Global Statistics
+                        </h5>
+
+                        <div class="stat-item">
+                            <i class="bi bi-thermometer-half"></i>
+                            <strong>Average Temp</strong>
+                            <div class="fs-4 mt-2" id="avgTemp">--°C</div>
+                        </div>
+
+                        <div class="stat-item">
+                            <i class="bi bi-fire"></i>
+                            <strong>Hottest City</strong>
+                            <div class="fs-5 mt-2" id="hottestCity">--</div>
+                        </div>
+
+                        <div class="stat-item">
+                            <i class="bi bi-snow"></i>
+                            <strong>Coldest City</strong>
+                            <div class="fs-5 mt-2" id="coldestCity">--</div>
+                        </div>
+
+                        <div class="stat-item">
+                            <i class="bi bi-globe"></i>
+                            <strong>Total Cities</strong>
+                            <div class="fs-4 mt-2" id="totalCities">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-white mt-4 opacity-75">
+            <p class="mb-1">
+                <i class="bi bi-github me-2"></i>
+                <a href="https://github.com/abdulwahed-sweden/weather_api_rust" class="text-white text-decoration-none">
+                    View on GitHub
+                </a>
+            </p>
+            <p class="small">Built with 🦀 Rust | Made with ❤️ for the community</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:3000';
+
+        // DOM Elements
+        const citySelect = document.getElementById('citySelect');
+        const fetchWeatherBtn = document.getElementById('fetchWeatherBtn');
+        const weatherCard = document.getElementById('weatherCard');
+        const statsCard = document.getElementById('statsCard');
+        const errorAlert = document.getElementById('errorAlert');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+
+        // Initialize the application
+        async function init() {
+            await loadCities();
+            await loadStats();
+        }
+
+        // Load all available cities from API
+        async function loadCities() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/cities`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch cities');
+                }
+
+                const data = await response.json();
+
+                // Clear the select element
+                citySelect.innerHTML = '<option value="" selected>-- Select a city --</option>';
+
+                // Populate cities in dropdown
+                data.cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city.charAt(0).toUpperCase() + city.slice(1);
+                    citySelect.appendChild(option);
+                });
+
+                hideError();
+
+            } catch (error) {
+                console.error('Error loading cities:', error);
+                showError('Failed to load cities. Make sure the server is running on http://localhost:3000');
+                citySelect.innerHTML = '<option value="">Error loading cities</option>';
+            }
+        }
+
+        // Load global statistics from API
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/stats`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch stats');
+                }
+
+                const data = await response.json();
+
+                // Update statistics display
+                document.getElementById('avgTemp').textContent = `${data.average_temp.toFixed(1)}°C`;
+                document.getElementById('hottestCity').textContent = capitalizeCity(data.hottest_city);
+                document.getElementById('coldestCity').textContent = capitalizeCity(data.coldest_city);
+                document.getElementById('totalCities').textContent = data.total_cities;
+
+                // Show stats card with animation
+                statsCard.style.display = 'block';
+                statsCard.classList.add('fade-in');
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Stats are optional, so we don't show error for this
+            }
+        }
+
+        // Fetch weather data for selected city
+        async function fetchWeather() {
+            const selectedCity = citySelect.value;
+
+            // Validate city selection
+            if (!selectedCity) {
+                showError('Please select a city first');
+                return;
+            }
+
+            // Show loading state
+            setLoading(true);
+            hideError();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/weather`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cities: [selectedCity]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch weather data');
+                }
+
+                const data = await response.json();
+                const weatherData = data.data[selectedCity];
+
+                // Update weather display
+                displayWeather(weatherData);
+
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                showError('Failed to fetch weather data. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Display weather data on the UI
+        function displayWeather(weather) {
+            // Update city name and temperature
+            document.getElementById('cityName').textContent = weather.city;
+            document.getElementById('temperature').textContent = `${weather.temperature}°C`;
+            document.getElementById('condition').textContent = weather.condition;
+            document.getElementById('humidity').textContent = `${weather.humidity}%`;
+            document.getElementById('windSpeed').textContent = `${weather.wind_speed} km/h`;
+
+            // Update weather icon based on condition
+            updateWeatherIcon(weather.condition);
+
+            // Show weather card with animation
+            weatherCard.style.display = 'block';
+            weatherCard.classList.add('fade-in');
+        }
+
+        // Update weather icon based on condition
+        function updateWeatherIcon(condition) {
+            const iconElement = document.getElementById('weatherIcon');
+            const conditionLower = condition.toLowerCase();
+
+            // Map conditions to Bootstrap icons
+            if (conditionLower.includes('sunny') || conditionLower.includes('clear')) {
+                iconElement.className = 'bi bi-sun weather-icon';
+            } else if (conditionLower.includes('cloud')) {
+                iconElement.className = 'bi bi-cloud weather-icon';
+            } else if (conditionLower.includes('rain')) {
+                iconElement.className = 'bi bi-cloud-rain weather-icon';
+            } else if (conditionLower.includes('snow')) {
+                iconElement.className = 'bi bi-cloud-snow weather-icon';
+            } else if (conditionLower.includes('fog')) {
+                iconElement.className = 'bi bi-cloud-fog weather-icon';
+            } else if (conditionLower.includes('wind')) {
+                iconElement.className = 'bi bi-wind weather-icon';
+            } else if (conditionLower.includes('hot')) {
+                iconElement.className = 'bi bi-sun weather-icon';
+            } else {
+                iconElement.className = 'bi bi-cloud-sun weather-icon';
+            }
+        }
+
+        // Show loading state
+        function setLoading(isLoading) {
+            if (isLoading) {
+                btnText.style.display = 'none';
+                btnSpinner.classList.add('show');
+                fetchWeatherBtn.disabled = true;
+            } else {
+                btnText.style.display = 'inline';
+                btnSpinner.classList.remove('show');
+                fetchWeatherBtn.disabled = false;
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            errorAlert.style.display = 'block';
+            errorAlert.classList.add('fade-in');
+        }
+
+        // Hide error message
+        function hideError() {
+            errorAlert.style.display = 'none';
+        }
+
+        // Capitalize city name
+        function capitalizeCity(city) {
+            return city.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Event Listeners
+        fetchWeatherBtn.addEventListener('click', fetchWeather);
+
+        // Allow fetching on Enter key in select
+        citySelect.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                fetchWeather();
+            }
+        });
+
+        // Initialize the app when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

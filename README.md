@@ -1,6 +1,6 @@
-# 🦀 Rust Weather API v0.2.0
+# 🦀 Rust Weather API v0.3.0
 
-A high-performance, feature-rich weather API server and client built with Rust, Axum, and Tokio.
+A high-performance, MCP-compatible weather API server and client built with Rust, Axum, and Tokio. Fully integrated with Claude Code Desktop via Model Context Protocol (MCP).
 
 ## ✨ Features
 
@@ -12,24 +12,35 @@ A high-performance, feature-rich weather API server and client built with Rust, 
 - **🛡️ Type-Safe**: Leverages Rust's strong type system with Serde serialization
 - **⚙️ Async Client**: Concurrent HTTP client with comprehensive error handling
 
+### MCP Integration (NEW in v0.3.0)
+- **🤖 Claude Code Compatible**: Full Model Context Protocol integration
+- **🔧 MCP Tool Provider**: `/mcp/tool/weather_info` endpoint for AI assistant integration
+- **📋 CLAUDE.md Manifest**: Complete tool documentation for Claude Code Desktop
+- **⏱️ Standardized Responses**: ISO 8601 timestamps and MCP-compliant JSON format
+- **✅ Tool Validation**: Request validation with proper error codes (400, 500)
+- **🌐 Zero Configuration**: Auto-detected by Claude Code Desktop on localhost:3000
+
 ### Advanced Features
-- **🎨 Web Dashboard**: Beautiful, responsive single-page UI with Bootstrap 5
+- **🎨 Web Dashboard**: Clean Scandinavian minimal design with Bootstrap 5
 - **📊 Statistics Endpoint**: Get average temps, hottest/coldest cities, sortable data
 - **✅ Request Validation**: Input validation with helpful error messages
 - **🌍 40+ Cities**: Weather data for major cities worldwide
 - **📈 Sorting**: Sort cities by temperature, name, humidity, or wind speed
 - **🧪 Unit Tests**: Comprehensive test coverage for data integrity
 - **📝 Logging**: HTTP request tracing middleware
+- **🔗 MCP Badge**: Live connection indicator on web dashboard
 
 ## 📁 Project Structure
 
 ```
 weather_api_rust/
 ├── Cargo.toml          # Project dependencies and metadata
-├── index.html          # 🎨 Web Dashboard (Bootstrap 5 UI)
+├── index.html          # 🎨 Web Dashboard (Clean Scandinavian minimal design)
+├── CLAUDE.md           # 🤖 MCP Tool Manifest for Claude Code integration
 ├── examples.sh         # cURL examples for testing
 ├── src/
 │   ├── server.rs       # HTTP server with all endpoints + tests
+│   ├── mcp_api.rs      # 🔧 MCP Tool Provider module (NEW in v0.3.0)
 │   └── client.rs       # Comprehensive test client
 └── README.md           # This file
 ```
@@ -63,15 +74,21 @@ cargo run --bin server
 
 You should see:
 ```
-🦀 Rust Weather API Server v0.2.0
-====================================
+🦀 Rust Weather API Server v0.3.0 - MCP Edition
+================================================
 
 🌤️  Starting server on http://localhost:3000
-📡 Endpoints:
+📡 Standard API Endpoints:
    GET  /           - Health check
    GET  /stats      - Weather statistics
    POST /weather    - Get weather info
    GET  /cities     - List all cities
+
+🔧 MCP Tool Provider Endpoints:
+   GET  /mcp        - MCP health check
+   POST /mcp/tool/weather_info - MCP weather tool
+
+🤖 Claude Code Integration: ENABLED
 
 ✅ Server running! Press Ctrl+C to stop
 ```
@@ -92,14 +109,31 @@ open index.html
 ```
 
 **Features:**
-- 🎨 Beautiful gradient design with purple/blue theme
+- 🎨 Clean Scandinavian minimal design (blue/white theme)
 - 📱 Fully responsive (works on mobile, tablet, desktop)
 - 🌐 Real-time data from Rust API
 - 🌤️ Dynamic weather icons based on conditions
-- 📊 Global statistics sidebar
+- 📊 Global statistics panel
+- 🔗 Live MCP connection indicator with glowing dot
 - ⚡ Smooth animations and loading states
+- 💫 Professional, calm aesthetic with whitespace
 
-### 4. Use cURL Examples
+### 4. Use with Claude Code Desktop
+
+Once the server is running, Claude Code Desktop will automatically detect the MCP tool:
+
+```
+You: Get weather for Gaza, Stockholm, and Paris
+```
+
+Claude Code will automatically:
+1. Detect the local MCP tool endpoint at `http://localhost:3000/mcp/tool/weather_info`
+2. Call the endpoint with the cities list
+3. Parse and present the weather information
+
+See `CLAUDE.md` for complete MCP integration documentation.
+
+### 5. Use cURL Examples
 
 ```bash
 # Run all example commands
@@ -113,6 +147,65 @@ curl http://localhost:3000/stats?sort=temp
 
 ## 🔌 API Endpoints
 
+### MCP Health Check (NEW in v0.3.0)
+```http
+GET http://localhost:3000/mcp
+```
+
+**Response:**
+```json
+{
+  "service": "Rust Weather API - MCP Tool Provider",
+  "status": "ok",
+  "version": "0.3.0",
+  "mcp_compatible": true,
+  "tools": ["weather_info"],
+  "endpoint": "/mcp/tool/weather_info"
+}
+```
+
+### MCP Weather Tool (NEW in v0.3.0)
+```http
+POST http://localhost:3000/mcp/tool/weather_info
+Content-Type: application/json
+
+{
+  "cities": ["Gaza", "Stockholm", "Paris"]
+}
+```
+
+**Response:**
+```json
+{
+  "tool": "weather_info",
+  "status": "success",
+  "timestamp": "2025-10-08T14:30:00Z",
+  "results": {
+    "Gaza": {
+      "city": "Gaza",
+      "temperature": 27,
+      "condition": "Sunny",
+      "humidity": 60,
+      "wind_speed": 12
+    },
+    "Stockholm": {
+      "city": "Stockholm",
+      "temperature": 15,
+      "condition": "Cloudy",
+      "humidity": 75,
+      "wind_speed": 15
+    }
+  }
+}
+```
+
+**Validation:**
+- ❌ Empty cities array → Returns 400 error
+- ❌ More than 20 cities → Returns 400 error
+- ✅ Unknown cities → Returns default values (20°C, Unknown condition)
+
+---
+
 ### Health Check
 ```http
 GET http://localhost:3000/
@@ -123,12 +216,15 @@ GET http://localhost:3000/
 {
   "status": "ok",
   "service": "Rust Weather API",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "mcp_enabled": true,
   "endpoints": [
     "GET /",
     "GET /stats",
     "GET /cities",
-    "POST /weather"
+    "POST /weather",
+    "GET /mcp",
+    "POST /mcp/tool/weather_info"
   ]
 }
 ```
@@ -286,6 +382,7 @@ cargo clippy
 - **tower** `0.5` - Middleware and utilities
 - **tower-http** `0.6` - HTTP middleware (CORS, tracing)
 - **reqwest** `0.12` - HTTP client
+- **chrono** `0.4` - Date/time handling for MCP timestamps (NEW in v0.3.0)
 
 ## 🚀 Performance
 
@@ -305,14 +402,27 @@ Contributions welcome! Feel free to open issues or submit pull requests.
 
 ## 🎯 Roadmap
 
-- [ ] Integration with real weather APIs
+- [x] Model Context Protocol (MCP) integration ✅ v0.3.0
+- [x] Claude Code Desktop compatibility ✅ v0.3.0
+- [x] Clean minimal web dashboard ✅ v0.3.0
+- [ ] Integration with real weather APIs (OpenWeatherMap, WeatherAPI)
 - [ ] Database persistence (PostgreSQL/SQLite)
 - [ ] Authentication & API keys
 - [ ] Rate limiting
 - [ ] Caching layer (Redis)
 - [ ] Docker containerization
 - [ ] Kubernetes deployment manifests
+- [ ] Additional MCP tools (forecasts, historical data)
 
 ---
 
-**Built with 🦀 Rust** | **Powered by Axum & Tokio** | Made with ❤️ for the community
+## 🔗 Related Documentation
+
+- **MCP Integration Guide**: See `CLAUDE.md` for complete Model Context Protocol documentation
+- **MCP Specification**: https://modelcontextprotocol.io
+- **Claude Code**: https://claude.com/claude-code
+- **GitHub Repository**: https://github.com/abdulwahed-sweden/weather_api_rust
+
+---
+
+**Built with 🦀 Rust v0.3.0** | **Powered by Axum & Tokio** | **MCP-Compatible** | Made with ❤️ for the community

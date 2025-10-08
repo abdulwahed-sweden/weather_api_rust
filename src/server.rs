@@ -1,3 +1,6 @@
+// MCP API module
+mod mcp_api;
+
 use axum::{
     extract::{Json, Query},
     http::StatusCode,
@@ -21,12 +24,12 @@ struct WeatherResponse {
 }
 
 #[derive(Debug, Serialize, Clone)]
-struct WeatherData {
-    city: String,
-    temperature: i32,
-    condition: String,
-    humidity: i32,
-    wind_speed: i32,
+pub struct WeatherData {
+    pub city: String,
+    pub temperature: i32,
+    pub condition: String,
+    pub humidity: i32,
+    pub wind_speed: i32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -53,23 +56,33 @@ struct ErrorResponse {
 /// Main entry point for the weather API server
 #[tokio::main]
 async fn main() {
-    println!("🦀 Rust Weather API Server v0.2.0");
-    println!("====================================");
+    println!("🦀 Rust Weather API Server v0.3.0 - MCP Edition");
+    println!("================================================");
     println!();
     println!("🌤️  Starting server on http://localhost:3000");
-    println!("📡 Endpoints:");
+    println!("📡 Standard API Endpoints:");
     println!("   GET  /           - Health check");
     println!("   GET  /stats      - Weather statistics");
     println!("   POST /weather    - Get weather info");
     println!("   GET  /cities     - List all cities");
     println!();
+    println!("🔧 MCP Tool Provider Endpoints:");
+    println!("   GET  /mcp        - MCP health check");
+    println!("   POST /mcp/tool/weather_info - MCP weather tool");
+    println!();
+    println!("🤖 Claude Code Integration: ENABLED");
+    println!();
 
     // Build our application with routes
     let app = Router::new()
+        // Standard API routes
         .route("/", get(health_check))
         .route("/weather", post(get_weather))
         .route("/stats", get(get_stats))
         .route("/cities", get(get_cities))
+        // MCP routes
+        .route("/mcp", get(mcp_api::mcp_health_check))
+        .route("/mcp/tool/weather_info", post(mcp_api::weather_info_mcp))
         .layer(TraceLayer::new_for_http())
         .layer(
             CorsLayer::new()
@@ -93,18 +106,22 @@ async fn health_check() -> impl IntoResponse {
     Json(serde_json::json!({
         "status": "ok",
         "service": "Rust Weather API",
-        "version": "0.2.0",
+        "version": "0.3.0",
+        "mcp_enabled": true,
         "endpoints": [
             "GET /",
             "GET /stats",
             "GET /cities",
-            "POST /weather"
+            "POST /weather",
+            "GET /mcp",
+            "POST /mcp/tool/weather_info"
         ]
     }))
 }
 
 /// Get database of all cities with weather data
-fn get_weather_database() -> HashMap<&'static str, (i32, &'static str, i32, i32)> {
+/// Made public for MCP API module access
+pub fn get_weather_database() -> HashMap<&'static str, (i32, &'static str, i32, i32)> {
     // (temperature, condition, humidity, wind_speed)
     [
         ("stockholm", (15, "Cloudy", 75, 15)),

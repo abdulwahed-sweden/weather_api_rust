@@ -26,31 +26,27 @@
             background-color: #FAFBFC;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--dark-text);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* MCP Connection Badge - Floating */
+        /* MCP Connection Badge - Footer */
         .mcp-badge {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: 2px solid var(--primary-blue);
+            background: var(--light-blue);
+            border: 1px solid var(--primary-blue);
             border-radius: 50px;
-            padding: 8px 20px;
-            display: flex;
+            padding: 8px 18px;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
-            z-index: 1000;
             font-size: 0.9rem;
             font-weight: 500;
             color: var(--dark-text);
+            margin-bottom: 1rem;
         }
 
         .mcp-badge .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: var(--success-green);
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite;
@@ -66,48 +62,48 @@
         }
 
         .main-container {
-            max-width: 1100px;
-            margin: 4rem auto 2rem auto;
+            max-width: 1400px;
+            margin: 2.5rem auto 1.5rem auto;
             padding: 0 2rem;
         }
 
         /* Header Section */
         .header-section {
             background: white;
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin-bottom: 3rem;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid var(--border-color);
             text-align: center;
         }
 
         .header-section h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 600;
             color: var(--dark-text);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .header-section .subtitle {
             color: #6B7280;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
 
         .tech-badges {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
         .tech-badge {
             background: var(--light-blue);
             color: var(--primary-blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
             font-weight: 500;
         }
 
@@ -117,7 +113,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             transition: box-shadow 0.3s ease;
         }
 
@@ -126,22 +122,22 @@
         }
 
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 600;
             color: var(--dark-text);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         /* City Selection */
         .selection-card {
-            padding: 2rem;
+            padding: 1.25rem 1.5rem;
         }
 
         .form-select {
             border: 2px solid var(--border-color);
             border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
             transition: border-color 0.2s;
         }
 
@@ -153,7 +149,7 @@
         .btn-fetch {
             background: var(--primary-blue);
             border: none;
-            padding: 0.75rem 2rem;
+            padding: 0.6rem 1.5rem;
             font-weight: 500;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -168,54 +164,54 @@
 
         /* Weather Display */
         .weather-display {
-            padding: 3rem 2rem;
+            padding: 1.75rem 1.5rem;
             text-align: center;
         }
 
         .weather-icon {
-            font-size: 5rem;
+            font-size: 3.5rem;
             color: var(--primary-blue);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .city-name {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 600;
             color: var(--dark-text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
 
         .temp-display {
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--primary-blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
 
         .condition-text {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: #6B7280;
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
         .weather-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 1rem;
+            margin-top: 1.25rem;
         }
 
         .detail-item {
             background: var(--light-gray);
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .detail-item i {
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: var(--primary-blue);
         }
 
@@ -224,34 +220,34 @@
         }
 
         .detail-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6B7280;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
         }
 
         .detail-value {
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 600;
             color: var(--dark-text);
         }
 
         /* Statistics Panel */
         .stats-card {
-            padding: 2rem;
+            padding: 1.25rem 1.5rem;
         }
 
         .stat-item {
-            padding: 1.5rem;
+            padding: 1rem;
             background: var(--light-gray);
             border-radius: 8px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .stat-item i {
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: var(--primary-blue);
         }
 
@@ -260,13 +256,13 @@
         }
 
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6B7280;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
         }
 
         .stat-value {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--dark-text);
         }
@@ -274,10 +270,10 @@
         /* Footer */
         .footer {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem 2rem;
             color: #6B7280;
             border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
+            margin-top: 2rem;
         }
 
         .footer a {
@@ -308,21 +304,16 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .mcp-badge {
-                font-size: 0.8rem;
-                padding: 6px 12px;
-            }
-
             .header-section h1 {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
 
             .temp-display {
-                font-size: 3rem;
+                font-size: 2.5rem;
             }
 
             .weather-icon {
-                font-size: 3.5rem;
+                font-size: 3rem;
             }
 
             .weather-details {
@@ -331,7 +322,7 @@
 
             .main-container {
                 padding: 0 1rem;
-                margin-top: 5rem;
+                margin-top: 2.5rem;
             }
         }
 
@@ -353,12 +344,6 @@
     </style>
 </head>
 <body>
-    <!-- MCP Connection Badge -->
-    <div class="mcp-badge">
-        <span class="status-dot"></span>
-        <span>🔗 MCP Connected</span>
-    </div>
-
     <div class="main-container">
 
         <!-- Header Section -->
@@ -483,6 +468,10 @@
 
         <!-- Footer -->
         <div class="footer">
+            <div class="mcp-badge">
+                <span class="status-dot"></span>
+                <span>🔗 MCP Connected</span>
+            </div>
             <p class="mb-2">
                 <i class="bi bi-github me-2"></i>
                 <a href="https://github.com/abdulwahed-sweden/weather_api_rust" target="_blank">
